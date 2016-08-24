@@ -8,8 +8,16 @@ class Indicator (MonoBehaviour):
     public amseq as Amseq
     public text as Text
     public lastTime as single
+    public frameParent as Transform
+    public framePrefab as GameObject
 
-
+    def Start():
+        print(amseq.frames.Count)
+        for i in range(amseq.frames.Count):
+            clone = Instantiate(framePrefab)
+            clone.transform.SetParent(frameParent, false)
+            clone.transform.localPosition = Vector3.zero
+            clone.transform.localPosition.x = i 
 
     def OnMouseDown():
         print("click")
@@ -37,3 +45,7 @@ class Indicator (MonoBehaviour):
             transform.localPosition.x++
             GoToFrame(transform.localPosition.x)
             lastTime = Time.time
+
+    def SetFrameMarker(state as bool):
+        print("frame marker true")
+        frameParent.GetChild(transform.localPosition.x).gameObject.SetActive(state)

@@ -4,7 +4,7 @@ import System.IO
 import UnityEngine.UI
 import UnityEngine.EventSystems
 
-class Amseq (MonoBehaviour, IPointerUpHandler, IDragHandler): 
+class Amseq (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, IDragHandler): 
 
     public canvas as Material
     public color as Color32 = Color.black
@@ -15,8 +15,8 @@ class Amseq (MonoBehaviour, IPointerUpHandler, IDragHandler):
     public pixelPositionText as Text
     private mouseLocalPosition as Vector2
     private lastPosition as Vector2 = -Vector2.one
-    private blankFrame as Texture2D
     public undoFrame as (Color)
+    public indicator as Indicator
 
     public fps as single = 12
     public frameTime as single
@@ -28,15 +28,26 @@ class Amseq (MonoBehaviour, IPointerUpHandler, IDragHandler):
 
     def Awake():
         frames = List of Texture2D()
-        blankFrame = Texture2D(frameSize.x, frameSize.y)
+        
         CreateProject(120)
         canvas.mainTexture = currentFrame
         canvasSize.y = transform.GetComponent(RectTransform).sizeDelta.y
         canvasSize.x = canvasSize.y * (frameSize.x / frameSize.y)
 
+    def BlankFrame() as Texture2D:
+        blankFrame = Texture2D(frameSize.x, frameSize.y, TextureFormat.ARGB32, false)
+        # texColors = array(Color32, frameSize.x * frameSize.y)
+        # for c in texColors:
+        #     c = Color.red
+        # blankFrame.SetPixels32(texColors)
+        # blankFrame.Apply()
+        return blankFrame
+
+
     def CreateProject(animationFrames as int):
+        blankFrame = BlankFrame()
         for i in range(animationFrames):
-            frames.Add(Texture2D(frameSize.x, frameSize.y))
+            frames.Add(BlankFrame())
         currentFrame = frames[0]
             
     def OnDrag(eventData as PointerEventData):
@@ -49,6 +60,11 @@ class Amseq (MonoBehaviour, IPointerUpHandler, IDragHandler):
             DrawLine(lastPosition.x, lastPosition.y, pixelPosition.x, pixelPosition.y)
             lastPosition = pixelPosition
             currentFrame.Apply()
+
+    def OnPointerDown(eventData as PointerEventData):
+        print("down")
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent(RectTransform), eventData.position, eventData.pressEventCamera, mouseLocalPosition)
+        indicator.SetFrameMarker(true)          
 
     def OnPointerUp(eventData as PointerEventData):
         lastPosition = -Vector2.one
