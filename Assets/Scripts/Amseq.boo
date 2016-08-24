@@ -4,7 +4,7 @@ import System.IO
 import UnityEngine.UI
 import UnityEngine.EventSystems
 
-class Amseq (MonoBehaviour, IDragHandler): 
+class Amseq (MonoBehaviour, IPointerUpHandler, IDragHandler): 
 
     public canvas as Material
     public color as Color32 = Color.black
@@ -50,7 +50,7 @@ class Amseq (MonoBehaviour, IDragHandler):
             lastPosition = pixelPosition
             currentFrame.Apply()
 
-    def OnMouseUp():
+    def OnPointerUp(eventData as PointerEventData):
         lastPosition = -Vector2.one
 
     def Update():
