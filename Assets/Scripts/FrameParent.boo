@@ -2,7 +2,7 @@
 import UnityEngine.UI
 import UnityEngine.EventSystems
 
-class FreeSpace (MonoBehaviour, IPointerClickHandler ): 
+class FrameParent (MonoBehaviour, IPointerClickHandler ): 
 
     public menu as GameObject
     private localCursorPosition as Vector2
