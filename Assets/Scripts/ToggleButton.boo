@@ -15,6 +15,8 @@ class ToggleButton (MonoBehaviour):
         toggledGraphic.localScale = Vector2.zero
         targetScale = Vector2.zero
 
+        transform.GetComponent(RectTransform).sizeDelta.x = transform.GetComponentInChildren(Text).text.Length + 1
+
     public def Toggle():
         if toggledGraphic.localScale.x < 0.9f:
             StartCoroutine(ScaleRoutine(Vector2.one))
