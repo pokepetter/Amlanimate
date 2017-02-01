@@ -1,4 +1,4 @@
-﻿import UnityEngine
+import UnityEngine
 import System.Collections
 import System.IO
 import UnityEngine.UI
@@ -68,6 +68,12 @@ class Amseq (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, IDragHandler
 
     def OnPointerUp(eventData as PointerEventData):
         lastPosition = -Vector2.one
+
+        //add icon to show if frame has been drawing on
+        # if currentFrame != blankFrame:
+        # 	clone = Instantiate(keyFrameIcon)
+        # 	clone.transform.parent = frameParent
+        # 	clone.transform.localPosition.x = x
 
     def Update():
         //undo

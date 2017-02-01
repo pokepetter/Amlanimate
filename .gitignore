@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # =============== #
 # Unity generated #
 # =============== #
@@ -29,4 +30,37 @@ sysinfo.txt
 .Trashes
 Icon?
 ehthumbs.db
+=======
+# =============== #
+# Unity generated #
+# =============== #
+[Tt]emp/
+[Oo]bj/
+[Bb]uild
+[Ll]ibrary/
+sysinfo.txt
+ 
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+[Ee]xported[Oo]bj/
+/*.userprefs
+/*.csproj
+/*.pidb
+/*.suo
+/*.sln*
+/*.user
+/*.unityproj
+/*.booproj
+ 
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+>>>>>>> Stashed changes
 [Tt]humbs.db
