@@ -20,6 +20,7 @@ class Search (MonoBehaviour):
         for n in availableMethods:
             print(n)
 
+
     def Update():
         if Input.GetKey(KeyCode.LeftControl):
             if Input.GetKeyDown(KeyCode.F):
@@ -61,12 +62,12 @@ class Search (MonoBehaviour):
             pass
 
 
-
     public def Toggle():
         if toggledGraphic.localScale.x < 0.9f:
             StartCoroutine(ScaleRoutine(Vector2.one))
         else:
             StartCoroutine(ScaleRoutine(Vector2.zero))
+
 
     private def ScaleRoutine(targetScale as Vector2) as IEnumerator:
         elapsedTime = 0f

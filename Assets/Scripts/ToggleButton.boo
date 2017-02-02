@@ -8,6 +8,7 @@ class ToggleButton (MonoBehaviour):
     private elapsedTime as single
     private t as single
 
+
     def Awake():
         button = GetComponent(Button)
         button.onClick.AddListener({Toggle()})
@@ -15,13 +16,13 @@ class ToggleButton (MonoBehaviour):
         toggledGraphic.localScale = Vector2.zero
         targetScale = Vector2.zero
 
-        transform.GetComponent(RectTransform).sizeDelta.x = transform.GetComponentInChildren(Text).text.Length + 1
 
     public def Toggle():
         if toggledGraphic.localScale.x < 0.9f:
             StartCoroutine(ScaleRoutine(Vector2.one))
         else:
             StartCoroutine(ScaleRoutine(Vector2.zero))
+
 
     private def ScaleRoutine(targetScale as Vector2) as IEnumerator:
         elapsedTime = 0f

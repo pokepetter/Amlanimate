@@ -17,7 +17,7 @@ class Commands (MonoBehaviour):
     public static def Run(command as string, parameters as (string)):
         print("running command: " + command)
 
-        type as Type = instance.GetType()
+        type = instance.GetType()
         method as MethodInfo = type.GetMethod(command)
         method.Invoke(instance, parameters)
 
