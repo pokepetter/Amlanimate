@@ -1,7 +1,7 @@
 ﻿import UnityEngine
 import UnityEngine.UI
 
-class Search (MonoBehaviour): 
+class CommandLine (MonoBehaviour): 
     
     public toggledGraphic as Transform
     public suggestedWordButton as GameObject
