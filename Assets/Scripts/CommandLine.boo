@@ -44,9 +44,9 @@ class CommandLine (MonoBehaviour):
                 else:
                     panel.color = Color.white
 
-        if Input.GetKeyDown(KeyCode.Tab):
-            if toggledGraphic.gameObject.activeSelf:
-                pass
+        if Input.GetKeyDown(KeyCode.Backspace):
+            if methodNameToRun.Length > 0:
+            	methodNameToRun = methodNameToRun.TrimEnd(methodNameToRun[methodNameToRun.Length -1])
                 //autocomplete
                 # if suggestionList.Length > 0:
                 # print("select button 0")
