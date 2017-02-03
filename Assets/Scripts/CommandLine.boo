@@ -4,12 +4,14 @@ import UnityEngine.UI
 class CommandLine (MonoBehaviour): 
     
     public toggledGraphic as Transform
+    public panel as Image
     public suggestedWordButton as GameObject
     public text as Text
     public methodNameToRun as string
 
-    private availableMethods as List of string
+    public canvas as Transform
 
+    private availableMethods as List of string
 
     public targetScale as Vector2
     private elapsedTime as single
@@ -17,8 +19,7 @@ class CommandLine (MonoBehaviour):
 
     def Start():
         availableMethods = Commands.GetMethodNames()
-        for n in availableMethods:
-            print(n)
+        allButtons = canvas.GetComponentsInChildren(AutoButton)
 
 
     def Update():
@@ -29,12 +30,19 @@ class CommandLine (MonoBehaviour):
 
             if Input.GetKeyDown(KeyCode.Backspace):
                 methodNameToRun = ""
+                text.text = methodNameToRun
 
         if Input.anyKeyDown:
             if toggledGraphic.gameObject.activeSelf and Input.inputString.Length == 1and char.IsLetter(Convert.ToChar(Input.inputString)):
                 methodNameToRun += Input.inputString
                 text.text = methodNameToRun
-                UpdateList()
+
+            for method in availableMethods:
+                if method == methodNameToRun:
+                    panel.color = Color(0.6, 0.8, 0.2)
+                    break
+                else:
+                    panel.color = Color.white
 
         if Input.GetKeyDown(KeyCode.Tab):
             if toggledGraphic.gameObject.activeSelf:
@@ -51,6 +59,8 @@ class CommandLine (MonoBehaviour):
             for method in availableMethods:
                 if method == methodNameToRun:
                     Commands.Run(methodNameToRun)
+                    methodNameToRun = ""
+                    Toggle()
                     break
 
             previousCommand = methodNameToRun
