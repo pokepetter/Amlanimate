@@ -1,4 +1,4 @@
-﻿import UnityEngine
+import UnityEngine
 import UnityEngine.UI
 
 class CommandLine (MonoBehaviour): 
@@ -7,19 +7,22 @@ class CommandLine (MonoBehaviour):
     public panel as Image
     public suggestedWordButton as GameObject
     public text as Text
+    public hotkeyText as Text
     public methodNameToRun as string
 
     public canvas as Transform
 
     private availableMethods as List of string
+    private allButtons as (AutoButton)
 
+    private isOpen as bool
     public targetScale as Vector2
     private elapsedTime as single
     private t as single
 
     def Start():
         availableMethods = Commands.GetMethodNames()
-        allButtons = canvas.GetComponentsInChildren(AutoButton)
+        allButtons = canvas.GetComponentsInChildren[of AutoButton]()
 
 
     def Update():
@@ -32,39 +35,43 @@ class CommandLine (MonoBehaviour):
                 methodNameToRun = ""
                 text.text = methodNameToRun
 
-        if Input.anyKeyDown:
-            if toggledGraphic.gameObject.activeSelf and Input.inputString.Length == 1and char.IsLetter(Convert.ToChar(Input.inputString)):
-                methodNameToRun += Input.inputString
-                text.text = methodNameToRun
+        if isOpen:
+            if Input.anyKeyDown:
+                if isOpen and Input.inputString.Length == 1and char.IsLetter(Convert.ToChar(Input.inputString)):
+                    methodNameToRun += Input.inputString
+                    text.text = methodNameToRun
 
-            for method in availableMethods:
-                if method == methodNameToRun:
-                    panel.color = Color(0.6, 0.8, 0.2)
-                    break
-                else:
-                    panel.color = Color.white
+                for method in availableMethods:
+                    if method == methodNameToRun:
+                        panel.color = Color(0.6, 0.8, 0.2)
+                        for button in allButtons:
+                            if methodNameToRun == button.commandToRun:
+                                hotkeyText.text = button.hotKey
+                                break
+                        break
+                    else:
+                        panel.color = Color.white
 
-        if Input.GetKeyDown(KeyCode.Backspace):
-            if methodNameToRun.Length > 0:
-            	methodNameToRun = methodNameToRun.TrimEnd(methodNameToRun[methodNameToRun.Length -1])
-                //autocomplete
-                # if suggestionList.Length > 0:
-                # print("select button 0")
+            if Input.GetKeyDown(KeyCode.Backspace):
+                print("backspace")
+                if methodNameToRun.Length > 0:
+                    methodNameToRun = methodNameToRun.TrimEnd(methodNameToRun[methodNameToRun.Length -1])
+                    text.text = methodNameToRun
 
-        if Input.GetKeyDown(KeyCode.Escape):
-            if toggledGraphic.localScale.x > 0.9:
-                Toggle()    
+            if Input.GetKeyDown(KeyCode.Escape):
+                if toggledGraphic.localScale.x > 0.9:
+                    Toggle()    
 
-        if Input.GetKeyDown(KeyCode.Return) or Input.GetKeyDown(KeyCode.KeypadEnter):
-            for method in availableMethods:
-                if method == methodNameToRun:
-                    Commands.Run(methodNameToRun)
-                    methodNameToRun = ""
-                    Toggle()
-                    break
+            if Input.GetKeyDown(KeyCode.Return) or Input.GetKeyDown(KeyCode.KeypadEnter):
+                for method in availableMethods:
+                    if method == methodNameToRun:
+                        Commands.Run(methodNameToRun)
+                        methodNameToRun = ""
+                        Toggle()
+                        break
 
-            previousCommand = methodNameToRun
-            methodNameToRun = ""
+                previousCommand = methodNameToRun
+                methodNameToRun = ""
 
 
     def UpdateList():
@@ -75,8 +82,10 @@ class CommandLine (MonoBehaviour):
     public def Toggle():
         if toggledGraphic.localScale.x < 0.9f:
             StartCoroutine(ScaleRoutine(Vector2.one))
+            isOpen = true
         else:
             StartCoroutine(ScaleRoutine(Vector2.zero))
+            isOpen = false
 
 
     private def ScaleRoutine(targetScale as Vector2) as IEnumerator:
