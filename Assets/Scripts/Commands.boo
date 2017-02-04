@@ -11,15 +11,18 @@ class Commands (MonoBehaviour):
     def Awake():
         instance = self
 
+
     public static def Run(command as string):
         Commands.Run(command, array(string, 0))
 
-    public static def Run(command as string, parameters as (string)):
+    public static def Run(command as string, args as (string)):
         print("running command: " + command)
 
-        type = instance.GetType()
-        method as MethodInfo = type.GetMethod(command)
-        method.Invoke(instance, parameters)
+        method as MethodInfo = instance.GetType().GetMethod(command)
+        parameters as (duck) = args
+
+        instance.StartCoroutine(method.Name, parameters)
+
 
     public static def GetMethodNames() as List of string:
         type as Type = instance.GetType()
@@ -32,6 +35,9 @@ class Commands (MonoBehaviour):
         return methodNames
 
 
-    public def Test():
+    def Test():
         print("test")
 
+    def CreateProject(parameters as (object)):
+        width as int = (64 if parameters.Length == 0 else parameters[0])
+        print(width)
