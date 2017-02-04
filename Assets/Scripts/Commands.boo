@@ -39,5 +39,6 @@ class Commands (MonoBehaviour):
         print("test")
 
     def CreateProject(parameters as (object)):
-        width as int = (64 if parameters.Length == 0 else parameters[0])
-        print(width)
+        width = (64 if parameters.Length == 0 else parameters[0])
+        height = (64 if parameters.Length == 0 else parameters[1])
+        frames = (1 if parameters.Length == 0 else parameters[2])
