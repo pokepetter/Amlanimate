@@ -4,29 +4,33 @@ import System.Collections
 
 class AutoButton (MonoBehaviour): 
     
-    public buttonName as Text
-
-    public hotKey as string
+    public buttonText as Text
     public hotKeyText as Text
 
+    [Space(10)]
+    public argumentInputs as (Text)
+
+    [Space(10)]
+    public hotKey as string
     public commandToRun as string
 
-    public keys as (string)
-    public alphaNumericKey as KeyCode
-    public requireCtrl as bool
-    public requireAlt as bool
-    public requireShift as bool
+    private keys as (string)
+    private alphaNumericKey as KeyCode
+    private requireCtrl as bool
+    private requireAlt as bool
+    private requireShift as bool
 
 
     def Awake():
         words = gameObject.name.Split(char('['))
 
         commandToRun = words[0]
-        buttonName.text = commandToRun
-        if words.Length > 0:
+        buttonText.text = commandToRun
+        if words.Length > 1:
             for i in range(words.Length-1):
                 hotKeyText.text += words[i+1]
-        hotKey = gameObject.name.Substring(commandToRun.Length+1)
+            
+            hotKey = gameObject.name.Substring(commandToRun.Length+1)
 
 
         modKeys = List of KeyCode()

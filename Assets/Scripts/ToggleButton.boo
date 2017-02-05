@@ -5,23 +5,30 @@ class ToggleButton (MonoBehaviour):
     public toggledGraphic as Transform
     private button as Button
     public targetScale as Vector2
+    public hideOnAwake as bool
     private elapsedTime as single
     private t as single
 
 
     def Awake():
-        button = GetComponent(Button)
-        button.onClick.AddListener({Toggle()})
-        # toggledGraphic.localPosition = Vector2.zero
-        toggledGraphic.localScale = Vector2.zero
-        targetScale = Vector2.zero
+        if toggledGraphic != null:
+            button = GetComponent(Button)
+            button.onClick.AddListener({Toggle()})
+
+            if hideOnAwake:
+                toggledGraphic.gameObject.SetActive(false)
+                toggledGraphic.localPosition = Vector2.zero
+                toggledGraphic.localScale = Vector2.zero
+                targetScale = Vector2.zero
+
 
 
     public def Toggle():
-        if toggledGraphic.localScale.x < 0.9f:
-            StartCoroutine(ScaleRoutine(Vector2.one))
-        else:
-            StartCoroutine(ScaleRoutine(Vector2.zero))
+        if toggledGraphic != null:
+            if not toggledGraphic.gameObject.activeSelf:
+                StartCoroutine(ScaleRoutine(Vector2.one))
+            else:
+                StartCoroutine(ScaleRoutine(Vector2.zero))
 
 
     private def ScaleRoutine(targetScale as Vector2) as IEnumerator:
