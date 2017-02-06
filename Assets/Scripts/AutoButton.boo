@@ -20,8 +20,13 @@ class AutoButton (MonoBehaviour):
     private requireAlt as bool
     private requireShift as bool
 
+    private button as Button
+
 
     def Awake():
+        button = GetComponent(Button)
+        button.onClick.AddListener({Click()})
+
         words = gameObject.name.Split(char('['))
 
         commandToRun = words[0]
@@ -87,3 +92,6 @@ class AutoButton (MonoBehaviour):
                         if Input.GetKey(KeyCode.LeftShift) or Input.GetKey(KeyCode.RightShift):
                             if Input.GetKeyDown(alphaNumericKey):
                                 Commands.Run(commandToRun)
+
+    def Click():
+        Commands.Run(commandToRun)  
