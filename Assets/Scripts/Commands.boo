@@ -21,8 +21,10 @@ class Commands (MonoBehaviour):
         method as MethodInfo = instance.GetType().GetMethod(command)
         parameters as (duck) = args
 
-        instance.StartCoroutine(method.Name, parameters)
-
+        try:
+            instance.StartCoroutine(method.Name, parameters)
+        except e:
+            print(e)
 
     public static def GetMethodNames() as List of string:
         type as Type = instance.GetType()
@@ -40,8 +42,16 @@ class Commands (MonoBehaviour):
 
     def CreateCanvas(parameters as (object)):
         width = (64 if parameters.Length == 0 else parameters[0])
-        height = (64 if parameters.Length == 0 else parameters[1])
-        frameAmount = (1 if parameters.Length == 0 else parameters[2])
-        fps = (24 if parameters.Length == 0 else parameters[3])
+        height = (64 if parameters.Length <= 1 else parameters[1])
+        frameAmount = (1 if parameters.Length <= 2 else parameters[2])
+        fps = (24 if parameters.Length <= 3 else parameters[3])
 
         CanvasManager.CreateCanvas(width, height, frameAmount, fps)
+
+    def SelectColor(parameters as (object)):
+        r = (0 if parameters.Length == 0 else parameters[0])
+        g = (0 if parameters.Length <= 1 else parameters[1])
+        b = (0 if parameters.Length <= 2 else parameters[2])
+        a = (1 if parameters.Length <= 3 else parameters[3])
+
+        # Tools.SelectColor(Color(r,g,b,a))

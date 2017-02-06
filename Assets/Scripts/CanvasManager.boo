@@ -25,6 +25,7 @@ class CanvasManager (MonoBehaviour):
 
         newCanvas.frameSize = Vector2(width, height)
         blankFrame = Texture2D(width, height, TextureFormat.ARGB32, false)
+        blankFrame.filterMode = FilterMode.Point
         newCanvas.frames = List of Texture2D()
         newCanvas.fps = fps
 
