@@ -8,6 +8,7 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
 
     public canvas as Material
     public color as Color32 = Color.black
+    public brush as Texture2D
     public frames as List of Texture2D
     public currentFrame as Texture2D
     public cursor as Transform
@@ -25,6 +26,12 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
     public canvasSize as Vector2
     public zoom as single = 1f
     public image as Image
+
+    private xPos as int
+    private ypos as int
+    private opacity as single
+
+    private newColor as Color32
             
 
     def OnDrag(eventData as PointerEventData):
@@ -42,7 +49,15 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
     def OnPointerDown(eventData as PointerEventData):
         print("down")
         RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent(RectTransform), eventData.position, eventData.pressEventCamera, mouseLocalPosition)
-        # indicator.SetFrameMarker(true)          
+        # indicator.SetFrameMarker(true)
+        if Input.GetMouseButtonDown(0):
+            pixelPosition = Vector2(((mouseLocalPosition.x / canvasSize.x) + 0.5f) * frameSize.x, ((mouseLocalPosition.y / canvasSize.y) + 0.5f) * frameSize.y)
+            # pixelPositionText.text = pixelPosition.ToString()
+            if lastPosition == -Vector2.one:
+                lastPosition = pixelPosition
+            DrawLine(lastPosition.x, lastPosition.y, pixelPosition.x, pixelPosition.y)
+            lastPosition = pixelPosition
+            currentFrame.Apply()     
 
 
     def OnPointerUp(eventData as PointerEventData):
@@ -50,9 +65,9 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
 
         //add icon to show if frame has been drawing on
         # if currentFrame != blankFrame:
-        # 	clone = Instantiate(keyFrameIcon)
-        # 	clone.transform.parent = frameParent
-        # 	clone.transform.localPosition.x = x
+        #   clone = Instantiate(keyFrameIcon)
+        #   clone.transform.parent = frameParent
+        #   clone.transform.localPosition.x = x
 
 
     def Update():
@@ -129,7 +144,18 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
         differenceY <<= 1
         differenceX <<= 1
      
-        currentFrame.SetPixel(startX, startY, color)
+        halfWidth = brush.width /2
+        halfHeight = brush.height /2
+
+        for y in range(brush.height):
+            for x in range(brush.width):
+                xPos = startX+x-halfWidth
+                yPos = startY+y-halfHeight
+                opacity = currentFrame.GetPixel(xPos, yPos).a // * toolOpacity
+                newColor = (currentFrame.GetPixel(xPos, yPos) * (1-opacity)) + (brush.GetPixel(x,y) * opacity)
+                currentFrame.SetPixel(xPos, yPos, newColor)
+
+        # color = ((currentColor * (1 - opacity)) + (newColor * opacity)) //maybe handle transparency like this?
         if (differenceX > differenceY):
             fraction = differenceY - (differenceX >> 1)
             while startX != endX:
