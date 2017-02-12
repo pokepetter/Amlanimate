@@ -2,23 +2,23 @@
 import UnityEngine.UI
 import System.IO
 
-class PaletteButton (MonoBehaviour): 
+class Palette (MonoBehaviour, IPointerDownHandler): 
 
     public image as Image
 
-    private button as Button
+    public static currentColor as Color = Color.black
+
     private currentDirectory as string
     private files as (string)
 
     private fileData as (byte)
     private texture as Texture2D
 
+    private mouseLocalPosition as Vector2
     private colorAsStrings as (string)
 
 
     def Awake():
-        button = GetComponent(Button)
-        button.onClick.AddListener({Click()})
         image = GetComponent(Image)
 
         currentDirectory = Directory.GetCurrentDirectory() + "/" + "Palettes" //use "\\"" on windows
@@ -45,7 +45,9 @@ class PaletteButton (MonoBehaviour):
         print("no such palette")
 
 
-    def Click():
-        color = texture.GetPixel(0, 0)
-        colorAsStrings = (color.r.ToString(), color.g.ToString(), color.b.ToString(), color.a.ToString())
-        Commands.Run("SelectColor", colorAsStrings)
+    def OnPointerDown(eventData as PointerEventData):
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent(RectTransform), eventData.position, eventData.pressEventCamera, mouseLocalPosition)
+        color = texture.GetPixel(Mathf.FloorToInt(mouseLocalPosition.x), Mathf.FloorToInt(mouseLocalPosition.y))
+        currentColor = color
+        # colorAsStrings = (color.r.ToString(), color.g.ToString(), color.b.ToString(), color.a.ToString())
+        # Commands.Run("SelectColor", colorAsStrings)

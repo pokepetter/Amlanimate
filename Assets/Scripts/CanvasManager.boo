@@ -6,6 +6,7 @@ import System
 class CanvasManager (MonoBehaviour): 
     
     public static instance as CanvasManager
+    public static currentCanvas as AnimationCanvas
     public canvasPrefab as GameObject
     public canvases as List of AnimationCanvas
 
@@ -14,7 +15,7 @@ class CanvasManager (MonoBehaviour):
         canvases = List of AnimationCanvas()
 
 
-    static def CreateCanvas(width as int, height as int, animationFrames as int, fps as int):
+    static def CreateCanvas(width as int, height as int, animationFrames as int, fps as int) as AnimationCanvas:
         newCanvasInstance = Instantiate(instance.canvasPrefab)
         newCanvasInstance.transform.SetParent(instance.transform)
         newCanvasInstance.transform.localPosition = Vector3.zero
@@ -25,6 +26,12 @@ class CanvasManager (MonoBehaviour):
 
         newCanvas.frameSize = Vector2(width, height)
         blankFrame = Texture2D(width, height, TextureFormat.ARGB32, false)
+        blankFrameColors = array(Color, blankFrame.GetPixels().Length)
+        for color in blankFrameColors:
+            color = Color.clear
+        blankFrame.SetPixels(blankFrameColors)
+        blankFrame.Apply()
+
         blankFrame.filterMode = FilterMode.Point
         newCanvas.frames = List of Texture2D()
         newCanvas.fps = fps
@@ -37,11 +44,13 @@ class CanvasManager (MonoBehaviour):
         newCanvas.canvasSize.y = newCanvas.transform.GetComponent(RectTransform).sizeDelta.y
         newCanvas.canvasSize.x = newCanvas.canvasSize.y * (width / height)
 
+        return newCanvas
 
     static def SelectCanvas(canvasToSelect as AnimationCanvas):
         for c in instance.canvases:
             if c == canvasToSelect:
                 c.gameObject.SetActive(true)
+                currentCanvas = c
             else:
                 c.gameObject.SetActive(false)
 

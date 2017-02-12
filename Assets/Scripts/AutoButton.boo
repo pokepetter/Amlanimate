@@ -57,19 +57,17 @@ class AutoButton (MonoBehaviour):
             if requireCtrl:
                 if Input.GetKey(KeyCode.LeftControl) or Input.GetKey(KeyCode.RightControl):
                     if Input.GetKeyDown(alphaNumericKey):
-                        Commands.Run(commandToRun)
+                        Click()
 
             if requireAlt:
                 if Input.GetKey(KeyCode.LeftAlt) or Input.GetKey(KeyCode.RightAlt):
                     if Input.GetKeyDown(alphaNumericKey):
-                        Commands.Run(commandToRun)
+                        Click()
 
             if requireShift:
                 if Input.GetKey(KeyCode.LeftShift) or Input.GetKey(KeyCode.RightShift):
-                    print("pressing shift")
                     if Input.GetKeyDown(alphaNumericKey):
-                        print("yolo")
-                        Commands.Run(commandToRun)
+                        Click()
 
 
         if keys.Length == 3:
@@ -79,19 +77,23 @@ class AutoButton (MonoBehaviour):
                     if requireAlt:
                         if Input.GetKey(KeyCode.LeftAlt) or Input.GetKey(KeyCode.RightAlt):
                             if Input.GetKeyDown(alphaNumericKey):
-                                Commands.Run(commandToRun)
+                                Click()
 
                     if requireShift:
                         if Input.GetKey(KeyCode.LeftShift) or Input.GetKey(KeyCode.RightShift):
                             if Input.GetKeyDown(alphaNumericKey):
-                                Commands.Run(commandToRun)
+                                Click()
 
             if requireAlt:
                 if Input.GetKey(KeyCode.LeftAlt) or Input.GetKey(KeyCode.RightAlt):
                     if requireShift:
                         if Input.GetKey(KeyCode.LeftShift) or Input.GetKey(KeyCode.RightShift):
                             if Input.GetKeyDown(alphaNumericKey):
-                                Commands.Run(commandToRun)
+                                Click()
 
     def Click():
-        Commands.Run(commandToRun)  
+        parameters = array(string, argumentInputs.Length)
+        for i in range(argumentInputs.Length):
+            parameters[i] = argumentInputs[i].text
+
+        Commands.Run(commandToRun, parameters)

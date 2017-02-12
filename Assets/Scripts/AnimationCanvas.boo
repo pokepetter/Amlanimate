@@ -47,7 +47,6 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
 
 
     def OnPointerDown(eventData as PointerEventData):
-        print("down")
         RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent(RectTransform), eventData.position, eventData.pressEventCamera, mouseLocalPosition)
         # indicator.SetFrameMarker(true)
         if Input.GetMouseButtonDown(0):
@@ -151,9 +150,8 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
             for x in range(brush.width):
                 xPos = startX+x-halfWidth
                 yPos = startY+y-halfHeight
-                opacity = currentFrame.GetPixel(xPos, yPos).a // * toolOpacity
-                newColor = (currentFrame.GetPixel(xPos, yPos) * (1-opacity)) + (brush.GetPixel(x,y) * opacity)
-                currentFrame.SetPixel(xPos, yPos, newColor)
+                color = brush.GetPixel(x,y).grayscale * Palette.currentColor
+                currentFrame.SetPixel(xPos, yPos, color)
 
         # color = ((currentColor * (1 - opacity)) + (newColor * opacity)) //maybe handle transparency like this?
         if (differenceX > differenceY):
@@ -164,7 +162,13 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
                     fraction -= differenceX
                 startX += stepX
                 fraction += differenceY
-                currentFrame.SetPixel(startX, startY, color)
+                
+                for y in range(brush.height):
+                    for x in range(brush.width):
+                        xPos = startX+x-halfWidth
+                        yPos = startY+y-halfHeight
+                        color = brush.GetPixel(x,y).grayscale * Palette.currentColor
+                        currentFrame.SetPixel(xPos, yPos, color)
         else:
             fraction = differenceX - (differenceY >> 1)
             while startY != endY:
@@ -173,7 +177,13 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
                     fraction -= differenceY
                 startY += stepY
                 fraction += differenceX
-                currentFrame.SetPixel(startX, startY, color)
+
+                for y in range(brush.height):
+                    for x in range(brush.width):
+                        xPos = startX+x-halfWidth
+                        yPos = startY+y-halfHeight
+                        color = brush.GetPixel(x,y).grayscale * Palette.currentColor
+                        currentFrame.SetPixel(xPos, yPos, color)
 # //toggle eraser
 #         if Input.GetMouseButtonDown(1):
 #             tempColor as Color = currentColor
