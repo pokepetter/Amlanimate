@@ -43,10 +43,10 @@ class Commands (MonoBehaviour):
         print("test")
 
     def CreateCanvas(parameters as (object)):
-        width = (64 if parameters.Length == 0 or parameters[0] == "" else parameters[0])
-        height = (64 if parameters.Length <= 1 or parameters[0] == "" else parameters[1])
-        frameAmount = (1 if parameters.Length <= 2 or parameters[0] == "" else parameters[2])
-        fps = (24 if parameters.Length <= 3 or parameters[0] == "" else parameters[3])
+        width = (64 if parameters.Length == 0 or parameters[0] == "" else int.Parse(parameters[0]))
+        height = (64 if parameters.Length <= 1 or parameters[1] == "" else int.Parse(parameters[1]))
+        frameAmount = (1 if parameters.Length <= 2 or parameters[2] == "" else int.Parse(parameters[2]))
+        fps = (24 if parameters.Length <= 3 or parameters[3] == "" else int.Parse(parameters[3]))
 
         CanvasManager.CreateCanvas(width, height, frameAmount, fps)
 

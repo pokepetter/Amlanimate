@@ -41,8 +41,12 @@ class CanvasManager (MonoBehaviour):
 
         newCanvas.currentFrame = newCanvas.frames[0]
         newCanvas.canvas.mainTexture = newCanvas.currentFrame
+
         newCanvas.canvasSize.y = newCanvas.transform.GetComponent(RectTransform).sizeDelta.y
-        newCanvas.canvasSize.x = newCanvas.canvasSize.y * (width / height)
+        newCanvas.canvasSize.x = newCanvas.canvasSize.y * (width cast single / height cast single)
+        newCanvas.transform.GetComponent(RectTransform).sizeDelta.x = newCanvas.canvasSize.x
+
+
 
         return newCanvas
 

@@ -82,7 +82,7 @@ class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, ID
 
         if Input.GetAxis("Mouse ScrollWheel") != 0:
             # if transform.localScale.x > 0.1f and transform.localScale.x < 2f:
-            zoom += Input.GetAxis("Mouse ScrollWheel")
+            zoom += Input.GetAxis("Mouse ScrollWheel") / 2
             zoom = Mathf.Clamp(zoom, 0.1f, 2f)
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * zoom, Time.fixedDeltaTime * 10)
 

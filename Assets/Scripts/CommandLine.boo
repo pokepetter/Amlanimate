@@ -43,11 +43,13 @@ class CommandLine (MonoBehaviour):
                 methodNameToRun = ""
                 text.text = ""
                 arguments.Clear()
+                debugArgs = array(arguments)
                 argumentIndex = -1
 
         if isOpen:
             if Input.anyKeyDown:
                 if isOpen and Input.inputString.Length == 1:
+                    print(Input.inputString)
                     inputChar = Convert.ToChar(Input.inputString)
 
                     if not commandCompleted:
@@ -56,13 +58,15 @@ class CommandLine (MonoBehaviour):
                             text.text = methodNameToRun
 
                     else:
-                        if Input.inputString == " ":
+                        if char.IsWhiteSpace(inputChar):
+                            print("start argument")
                             text.text += " "
                             //start argument
                             arguments.Add("")
+                            debugArgs = array(arguments)
                             argumentIndex++
 
-                        if char.IsNumber(inputChar) or char.IsLetter(inputChar):
+                        if char.IsNumber(inputChar) or char.IsLetter(inputChar) or char.IsPunctuation(inputChar):
                             arguments[argumentIndex] += inputChar
                             debugArgs = array(arguments)
                             text.text += inputChar
