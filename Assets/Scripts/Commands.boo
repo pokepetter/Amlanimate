@@ -50,6 +50,7 @@ class Commands (MonoBehaviour):
 
         CanvasManager.CreateCanvas(width, height, frameAmount, fps)
 
+
     def SelectColor(parameters as (object)):
         r = (0 if parameters.Length == 0 else parameters[0])
         g = (0 if parameters.Length <= 1 else parameters[1])
@@ -74,12 +75,26 @@ class Commands (MonoBehaviour):
                     texture.LoadImage(fileData) //this will auto-resize the texture dimensions.
                     
                     animationCanvas = CanvasManager.CreateCanvas(texture.width, texture.height, 1, 24)
+                    animationCanvas.projectName = filePath
+                    print(animationCanvas.projectName)
                     animationCanvas.frames[0] = texture
                     animationCanvas.GoToFrame(0)
 
-    def SaveFile(parameters as (object)):
+    def Save(parameters as (object)):
+        print("trying to save")
+        if CanvasManager.currentCanvas.projectName != null:
+            print(CanvasManager.currentCanvas.projectName)
+            filePath = CanvasManager.currentCanvas.projectName
+            bytes = CanvasManager.currentCanvas.frames[0].EncodeToPNG()
+            File.WriteAllBytes(filePath, bytes)
+            print("saved to file: " + filePath)
+        else:
+            print("no projectName")
+
+    def SaveAs(parameters as (object)):
         if CanvasManager.currentCanvas != null:
             filePath = parameters[0].ToString()
+
             bytes = CanvasManager.currentCanvas.frames[0].EncodeToPNG()
             File.WriteAllBytes(filePath, bytes)
             print("saved to file: " + filePath)

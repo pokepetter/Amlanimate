@@ -6,6 +6,7 @@ import UnityEngine.EventSystems
 
 class AnimationCanvas (MonoBehaviour, IPointerUpHandler, IPointerDownHandler, IDragHandler): 
 
+    public projectName as string
     public canvas as Material
     public color as Color32 = Color.black
     public brush as Texture2D
