@@ -68,7 +68,7 @@ class Commands (MonoBehaviour):
             print("trying to load: " + filePath)
             if File.Exists(filePath):
 
-                if filePath.Substring(filePath.Length-4) == ".png":
+                if filePath.EndsWith(".png"):
                     fileData = File.ReadAllBytes(filePath)
                     texture as Texture2D = Texture2D(0, 0)
                     texture.filterMode = FilterMode.Point
